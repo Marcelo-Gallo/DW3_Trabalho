@@ -48,4 +48,33 @@ O projeto implementará um CRUD para **Clientes** e suas respectivas **Contas a 
 ---
 
 ## Estrutura de Arquivos e Pastas
-<!--Eu pensava em usar docker, o que acham?-->
+/
+├── .gitignore              # Ignora node_modules, .env, etc.
+├── README.md               # Documentação principal
+├── docker-compose.yml      # "Maestro" do Docker
+├── backend/                # Servidor Back-End (API)
+│   ├── Dockerfile          # Receita Docker do Back-End
+│   ├── package.json        # Dependências do Back-End
+│   ├── app.js              # Ponto de entrada do Back-End
+│   ├── databaseConfig.sql  # Script de criação das tabelas
+│   ├── app/                # Lógica da aplicação
+│   │   ├── controllers/    # Controladores (regras de negócio)
+│   │   ├── models/         # Modelos (interação com o BD)
+│   │   └── utils/          # Funções (conexão BD, auth)
+│   ├── routes/             # Definição das rotas da API
+│   └── .env                # Variáveis de ambiente (senhas)
+│
+└── frontend/               # Servidor Front-End (Interface)
+    ├── Dockerfile          # Receita Docker do Front-End
+    ├── package.json        # Dependências do Front-End
+    ├── app.js              # Ponto de entrada do Front-End
+    ├── public/             # Arquivos estáticos (CSS, JS, Imagens)
+    │   ├── stylesheets/
+    │   ├── javascripts/
+    │   └── images/
+    ├── routes/             # Rotas que renderizam páginas
+    ├── controllers/        # Controladores (lógica das páginas)
+    ├── views/              # Arquivos de template (.njk)
+    │   ├── clientes/       # Views de Clientes
+    │   └── contasReceber/  # Views de Contas a Receber
+    └── .env                # Variáveis de ambiente (URL da API)
