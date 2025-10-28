@@ -1,0 +1,64 @@
+# --- LOGIN (POST) ---
+POST http://localhost:40000/api/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "admin"
+}
+
+###
+
+# --- GET ALL CLIENTES ---
+GET http://localhost:40000/api/clientes
+Content-Type: application/json
+
+###
+
+# --- 3. GET CLIENTE BY ID (PÚBLICO - SEM TOKEN) ---
+# Substitua {id} pelo ID de um cliente existente (ex: 1 ou 2 dos dados de teste).
+GET http://localhost:40000/api/clientes/1
+Content-Type: application/json
+
+###
+
+# --- 4. INSERT CLIENTE (PROTEGIDO - COM TOKEN) ---
+# Importante: Substitua <TOKEN_JWT_AQUI> pelo token que você recebeu do login.
+# Você também pode usar variáveis de ambiente para o token (ver abaixo).
+POST http://localhost:40000/api/clientes
+Content-Type: application/json
+Authorization: Bearer <TOKEN_JWT_AQUI>
+
+{
+    "nome": "Novo Cliente Teste",
+    "cnpj": "99.888.777/0001-66",
+    "dataCadastro": "2024-05-20",
+    "limiteCredito": 7500.00
+}
+
+###
+
+# --- 5. UPDATE CLIENTE (PROTEGIDO - COM TOKEN) ---
+# Substitua {id} pelo ID do cliente a ser atualizado.
+# Substitua <TOKEN_JWT_AQUI> pelo seu token.
+PUT http://localhost:40000/api/clientes/3
+Content-Type: application/json
+Authorization: Bearer <TOKEN_JWT_AQUI>
+
+{
+    "nome": "Cliente Atualizado",
+    "cnpj": "99.888.777/0001-66",
+    "dataCadastro": "2024-05-20",
+    "limiteCredito": 9000.00
+}
+
+###
+
+# --- 6. DELETE CLIENTE (SOFT DELETE - PROTEGIDO - COM TOKEN) ---
+# Substitua {id} pelo ID do cliente a ser marcado como removido.
+# Substitua <TOKEN_JWT_AQUI> pelo seu token.
+DELETE http://localhost:40000/api/clientes/3
+Content-Type: application/json
+Authorization: Bearer <TOKEN_JWT_AQUI>
+
+###
