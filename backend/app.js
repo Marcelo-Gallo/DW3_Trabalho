@@ -1,5 +1,4 @@
-// Arquivo: backend/app.js
-// Descrição: Ponto de entrada do servidor Back-End (API RESTful).
+// Ponto de entrada do servidor Back-End (API RESTful).
 
 require('dotenv').config(); // Carrega variáveis de ambiente
 
@@ -8,10 +7,10 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 // Importa módulos de rota
-const indexRouter = require('./routes/index'); // Exemplo de rota padrão
+//const indexRouter = require('./routes/index'); // Exemplo de rota padrão
 const authRouter = require('./routes/auth'); // Rotas de autenticação
 const clientesRouter = require('./routes/clientes'); // Rotas para CRUD de clientes
-const contasReceberRouter = require('./routes/contasReceber'); // Rotas para CRUD de contas a receber
+//const contasReceberRouter = require('./routes/contasReceber'); // Rotas para CRUD de contas a receber
 
 const app = express();
 
@@ -21,10 +20,10 @@ app.use(bodyParser.json()); // Parsing de JSON
 app.use(bodyParser.urlencoded({ extended: true })); // Parsing de URL-encoded
 
 // Definição das rotas
-app.use('/', indexRouter); // Rota raiz
+//app.use('/', indexRouter); // Rota raiz
 app.use('/api/auth', authRouter); // Rotas de autenticação (login, registro)
 app.use('/api/clientes', clientesRouter); // Rotas para CRUD de clientes
-app.use('/api/contas-receber', contasReceberRouter); // Rotas para CRUD de contas a receber
+//app.use('/api/contas-receber', contasReceberRouter); // Rotas para CRUD de contas a receber
 
 // Tratamento de erros 404
 app.use((req, res, next) => {
