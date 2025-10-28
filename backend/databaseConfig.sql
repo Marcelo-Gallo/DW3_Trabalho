@@ -26,6 +26,16 @@ CREATE TABLE IF NOT EXISTS CONTAS_RECEBER (
         ON DELETE RESTRICT -- Impede a exclusão de um cliente se ele tiver contas a receber ativas
 );
 
+-- ** Tabela: USUARIOS **
+-- Representa os usuários do sistema (para autenticação).
+CREATE TABLE IF NOT EXISTS USUARIOS (
+    usuarioid SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    removido BOOLEAN NOT NULL DEFAULT FALSE
+);
+CREATE EXTENSION IF NOT EXISTS pgcrypto; -- Habilita a extensão pgcrypto para criptografar senhas
+
 -- ** Índices para otimização **
 CREATE INDEX IF NOT EXISTS IDX_CLIENTES_NOME ON CLIENTES (NOME);
 CREATE INDEX IF NOT EXISTS IDX_CONTAS_RECEBER_IDCLIENTE ON CONTAS_RECEBER (ID_CLIENTE);
@@ -40,3 +50,15 @@ INSERT INTO CONTAS_RECEBER (DESCRICAO, VALOR, DATAVENCIMENTO, ID_CLIENTE) VALUES
 ('Venda NF 001/2024', 1250.75, '2024-05-30', (SELECT ID FROM CLIENTES WHERE NOME = 'Empresa Exemplo Ltda')),
 ('Serviço de Consultoria', 500.00, '2024-06-15', (SELECT ID FROM CLIENTES WHERE NOME = 'Empresa Exemplo Ltda')),
 ('Venda de Produtos Diversos', 320.00, '2024-06-01', (SELECT ID FROM CLIENTES WHERE NOME = 'Comércio do João S.A.'));
+
+-- Insere um usuário padrão 'admin' com senha 'admin'
+-- A senha é criptografada com bcrypt (bf)
+-- Usuário admin com senha admin
+INSERT INTO usuarios (username, password) VALUES
+('admin', crypt('admin', gen_salt('bf'))) --crypt é a função para criptografar a senha
+ON CONFLICT (username) DO NOTHING;
+
+-- Insere um usuário 'qwe' com senha 'qwe'
+INSERT INTO usuarios (username, password) VALUES
+('qwe', crypt('qwe', gen_salt('bf')))
+ON CONFLICT (username) DO NOTHING;

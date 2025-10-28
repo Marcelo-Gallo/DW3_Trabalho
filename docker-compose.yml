@@ -61,6 +61,17 @@ services:
     networks:
       - dw3-network
 
+  # --- Serviço 4: Adminer (Interface Web para o BD) ---
+  adminer-svc:
+    image: adminer
+    container_name: dw3_adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database-svc
+    networks:
+      - dw3-network
+
 # --- Configuração de Rede e Volumes ---
 networks:
   dw3-network:
