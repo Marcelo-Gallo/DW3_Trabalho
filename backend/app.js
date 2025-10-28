@@ -45,7 +45,7 @@ app.use((error, req, res, next) => {
 // Inicia o servidor
 const PORT = 40000;
 app.listen(PORT, () => {
-  console.log(`🚀 Back-End Server rodando na porta ${PORT}`);
+  console.log(`Back-End Server rodando na porta ${PORT}`);
   console.log(`Acessível externamente em http://localhost:${PORT}`);
 });
 
