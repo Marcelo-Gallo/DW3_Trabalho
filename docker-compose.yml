@@ -1,0 +1,70 @@
+services:
+  # --- Serviço 1: Banco de Dados (PostgreSQL) ---
+  database-svc:
+    image: postgres:15-alpine
+    container_name: dw3_database
+    environment:
+      # Define as variáveis de ambiente para o PostgreSQL.
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5433:5432"
+    volumes:
+      # Monta o script SQL que criamos para inicializar o banco.
+      # O Docker-Postgres executa automaticamente scripts em /docker-entrypoint-initdb.d
+      - ./backend/databaseConfig.sql:/docker-entrypoint-initdb.d/init.sql
+      # Monta um volume para persistir os dados do banco, mesmo se o contêiner for removido.
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - dw3-network
+
+  # --- Serviço 2: Back-End (API) ---
+  backend-svc:
+    container_name: dw3_backend
+    build:
+      context: ./backend # Diz ao Docker para construir a imagem usando a pasta ./backend (onde está o Dockerfile)
+    ports:
+      - "40000:40000"
+    environment:
+      DB_USER: admin
+      DB_PASSWORD: admin123
+      DB_HOST: database-svc # IMPORTANTE: O host é o NOME do serviço do banco!
+      DB_NAME: dw3_trabalho
+      DB_PORT: 5432
+      JWT_SECRET: "${JWT_SECRET}"
+    depends_on:
+      - database-svc
+    volumes:
+      # Monta o código-fonte. Qualquer alteração no seu código local reflete no contêiner.
+      - ./backend:/usr/src/app
+      # Ignora o node_modules local, usando apenas o que foi instalado DENTRO do contêiner.
+      - /usr/src/app/node_modules
+    networks:
+      - dw3-network
+
+  # --- Serviço 3: Front-End (Interface) ---
+  frontend-svc:
+    container_name: dw3_frontend
+    build:
+      context: ./frontend # Constrói usando a pasta ./frontend
+    ports:
+      - "40100:40100"
+    environment:
+      API_URL: http://backend-svc:40000 # O front-end chama o back-end pelo nome do serviço! Nunca mais erro isso!
+    depends_on:
+      - backend-svc
+    volumes:
+      # Monta o código-fonte para desenvolvimento em tempo real.
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - dw3-network
+
+# --- Configuração de Rede e Volumes ---
+networks:
+  dw3-network:
+    driver: bridge
+
+volumes:
+  pg_data:
