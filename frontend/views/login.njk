@@ -1,0 +1,25 @@
+{% extends "layout.njk" %} 
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="card-title text-center mb-3">Login</h2>
+                {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+                <form action="/login" method="POST">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Usuário</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Senha</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <div class="d-grid mt-4"><button type="submit" class="btn btn-primary btn-lg">Entrar</button></div>
+                </form>
+                <hr><div class="text-center"><small class="text-muted">Teste: admin/admin ou qwe/qwe</small></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,78 @@
+## Arquivo: docker-compose.yml (VERSÃO FINAL CORRIGIDA)
+
+services:
+  # --- Serviço 1: Banco de Dados (PostgreSQL) ---
+  database-svc:
+    image: postgres:15-alpine
+    container_name: dw3_database
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5433:${DB_PORT}" 
+    volumes:
+      - ./backend/databaseConfig.sql:/docker-entrypoint-initdb.d/init.sql
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - dw3-network
+
+  # --- Serviço 2: Back-End (API) ---
+  backend-svc:
+    container_name: dw3_backend
+    build:
+      context: ./backend
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}" 
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST} 
+      DB_NAME: ${DB_NAME}
+      DB_PORT: ${DB_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: ${BACKEND_PORT} # Passa a porta para o app.js ler
+    depends_on:
+      - database-svc
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - dw3-network
+
+  # --- Serviço 3: Front-End (Interface) ---
+  frontend-svc:
+    container_name: dw3_frontend
+    build:
+      context: ./frontend
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}" 
+    environment:
+      API_URL: ${API_URL} 
+      PORT: ${FRONTEND_PORT} # Passa a porta para o app.js ler
+      SESSION_SECRET: ${SESSION_SECRET} # Passa o segredo da sessão
+    depends_on:
+      - backend-svc
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - dw3-network
+  
+  # --- Serviço 4: Adminer (Interface Web para o BD) ---
+  adminer-svc:
+    image: adminer 
+    container_name: dw3_adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database-svc 
+    networks:
+      - dw3-network
+
+# --- Configuração de Rede e Volumes ---
+networks:
+  dw3-network:
+    driver: bridge
+volumes:
+  pg_data:

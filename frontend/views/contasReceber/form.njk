@@ -1,0 +1,41 @@
+{% extends "../layout.njk" %}
+{% block content %}
+<h2 class="mb-3">{{ title }}</h2>
+{% include "_messages.njk" %}
+<div class="card shadow-sm"><div class="card-body">
+<form action="/contas-receber/save" method="POST">
+    <input type="hidden" name="id" value="{{ conta.id if conta }}">
+    <div class="row g-3">
+        <div class="col-md-12">
+            <label for="id_cliente" class="form-label">Cliente (Devedor)</label>
+            <select class="form-select" id="id_cliente" name="id_cliente" required>
+                <option value="">-- Selecione --</option>
+                {% for cliente in clientes %}
+                    <option value="{{ cliente.id }}" {% if conta and conta.id_cliente == cliente.id %} selected {% endif %}>
+                        {{ cliente.nome }} {{ '(' + cliente.cnpj + ')' if cliente.cnpj }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-12">
+            <label for="descricao" class="form-label">Descrição</label>
+            <input type="text" class="form-control" id="descricao" name="descricao" value="{{ conta.descricao if conta }}" required>
+        </div>
+        <div class="col-md-6">
+            <label for="valor" class="form-label">Valor (R$)</label>
+            <input type="number" class="form-control" id="valor" name="valor" step="0.01" min="0.01" value="{{ conta.valor if conta }}" required>
+        </div>
+        
+        <div class="col-md-6">
+            <label for="datavencimento" class="form-label">Vencimento</label>
+            <input type="date" class="form-control" id="datavencimento" name="datavencimento" 
+                   value="{{ conta.datavencimento if conta }}" required>
+        </div>
+        </div> <hr>
+    <div class="d-flex justify-content-end">
+        <a href="/contas-receber" class="btn btn-outline-secondary me-2">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </div>
+</form>
+</div></div>
+{% endblock %}

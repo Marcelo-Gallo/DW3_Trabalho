@@ -1,0 +1,35 @@
+{% extends "../layout.njk" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">{{ title }}</h2>
+    <a href="/clientes/add" class="btn btn-primary">+ Adicionar Cliente</a>
+</div>
+{% include "_messages.njk" %} 
+<div class="card shadow-sm"><div class="card-body">
+<table id="tabelaDados" class="table table-striped table-hover" style="width:100%">
+    <thead><tr>
+        <th>Nome</th><th>CNPJ</th><th>Cadastro</th><th>Limite Créd.</th>
+        <th class="text-end dt-nosort" style="width: 170px;">Ações</th>
+    </tr></thead>
+    <tbody>
+        {% for item in clientes %}
+        <tr>
+            <td>{{ item.nome }}</td>
+            <td>{{ item.cnpj or 'N/A' }}</td>
+            
+            <td>{{ item.datacadastro_formatado }}</td>
+            
+            <td>{{ item.limitecredito | numberFormat('pt-BR', { style: 'currency', currency: 'BRL' }) }}</td>
+            <td class="text-end" style="min-width: 170px;">
+                <div class="d-grid gap-1" style="grid-template-columns: 1fr 1fr;">
+                    <a href="/clientes/edit/{{ item.id }}" class="btn btn-sm btn-outline-primary">Editar</a>
+                    <a href="/clientes/delete/{{ item.id }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Tem certeza?');">Excluir</a>
+                </div>
+            </td>
+        </tr>
+        {% else %} <tr><td colspan="5" class="text-center">Nenhum cliente.</td></tr> {% endfor %}
+    </tbody>
+</table>
+</div></div>
+{% endblock %}
+{% block scripts %} <script src="/javascripts/_datatables_init.js"></script> {% endblock %}

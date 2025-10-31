@@ -1,0 +1,34 @@
+{% extends "../layout.njk" %}
+{% block content %}
+<h2 class="mb-3">{{ title }}</h2>
+{% include "_messages.njk" %}
+<div class="card shadow-sm"><div class="card-body">
+<form action="/clientes/save" method="POST">
+    <input type="hidden" name="id" value="{{ cliente.id if cliente }}">
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label for="nome" class="form-label">Nome Completo</label>
+            <input type="text" class="form-control" id="nome" name="nome" value="{{ cliente.nome if cliente }}" required>
+        </div>
+        <div class="col-md-6">
+            <label for="cnpj" class="form-label">CNPJ</label>
+            <input type="text" class="form-control" id="cnpj" name="cnpj" value="{{ cliente.cnpj if cliente }}">
+        </div>
+        
+        <div class="col-md-6">
+            <label for="datacadastro" class="form-label">Data Cadastro</label>
+            <input type="date" class="form-control" id="datacadastro" name="datacadastro" 
+                   value="{{ cliente.datacadastro if cliente }}" required>
+        </div>
+        <div class="col-md-6">
+            <label for="limitecredito" class="form-label">Limite Crédito (R$)</label>
+            <input type="number" class="form-control" id="limitecredito" name="limitecredito" step="0.01" min="0" value="{{ cliente.limitecredito if cliente }}" required>
+        </div>
+    </div> <hr>
+    <div class="d-flex justify-content-end">
+        <a href="/clientes" class="btn btn-outline-secondary me-2">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </div>
+</form>
+</div></div>
+{% endblock %}

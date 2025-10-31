@@ -1,0 +1,141 @@
+### ARQUIVO DE TESTE AUTOMÁTICO ###
+# Instruções:
+# 1. Clique "Send Request" na ETAPA 1 (LOGIN).
+# 2. O script de captura ( > {% ... %} ) irá rodar e salvar o token.
+# 3. Agora clique "Send Request" em qualquer outra requisição.
+# 4. Você não precisa copiar/colar o token.
+
+# Define a variável 'hostname'
+@hostname = localhost:40000
+
+###
+# ^^^ Separador para corrigir o erro de parsing inicial ###
+###
+
+# =================================================================
+# === 1. AUTENTICAÇÃO (Execute este primeiro)
+# =================================================================
+@name loginRequest
+POST http://{{hostname}}/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "admin"
+}
+
+# --- Script de Captura (CORRIGIDO) ---
+# O script agora está ANTES do '###', como parte da requisição de login.
+> {%
+    client.global.set("jwtToken", response.body.token);
+    client.log("Token capturado com sucesso!");
+%}
+
+###
+
+# =================================================================
+# === 2. CLIENTES (Automático)
+# =================================================================
+
+# --- GET ALL CLIENTES ---
+# Esta requisição agora usará o {{jwtToken}} salvo automaticamente
+GET http://{{hostname}}/api/clientes
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+###
+
+# --- GET CLIENTE BY ID ---
+GET http://{{hostname}}/api/clientes/1
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+###
+
+# --- INSERT CLIENTE ---
+POST http://{{hostname}}/api/clientes
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+    "nome": "Cliente Teste Automático",
+    "cnpj": "12.345.678/0001-99",
+    "datacadastro": "2025-10-31", 
+    "limitecredito": 1234.56
+}
+
+###
+
+# --- UPDATE CLIENTE ---
+PUT http://{{hostname}}/api/clientes/1
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+    "nome": "Empresa Exemplo (Atualizado Auto)",
+    "cnpj": "11.222.333/0001-44",
+    "datacadastro": "2023-01-10", 
+    "limitecredito": 15000.00
+}
+
+###
+
+# --- DELETE CLIENTE ---
+DELETE http://{{hostname}}/api/clientes/3
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+###
+
+# =================================================================
+# === 3. CONTAS A RECEBER (Automático)
+# =================================================================
+
+# --- GET ALL CONTAS ---
+GET http://{{hostname}}/api/contas-receber
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+###
+
+# --- GET CONTAS BY CLIENTE ID ---
+GET http://{{hostname}}/api/contas-receber/cliente/1
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+###
+
+# --- INSERT CONTA ---
+POST http://{{hostname}}/api/contas-receber
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+    "descricao": "Fatura de Teste Automático",
+    "valor": 99.99,
+    "datavencimento": "2025-12-31", 
+    "id_cliente": 1
+}
+
+###
+
+# --- UPDATE CONTA ---
+PUT http://{{hostname}}/api/contas-receber/1
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+    "descricao": "Venda NF 001 (Atualizada Auto)",
+    "valor": 1300.00,
+    "datavencimento": "2024-05-31",
+    "id_cliente": 1
+}
+
+###
+
+# --- DELETE CONTA ---
+DELETE http://{{hostname}}/api/contas-receber/2
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+###
