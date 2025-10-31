@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ### ARQUIVO DE TESTE AUTOMÁTICO ###
 # Instruções:
 # 1. Clique "Send Request" na ETAPA 1 (LOGIN).
@@ -16,6 +17,15 @@
 # === 1. AUTENTICAÇÃO (Execute este primeiro)
 # =================================================================
 @name loginRequest
+=======
+# --- REST Client: api.http ---
+@hostname = localhost:40000
+@jwtToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzYxNjYxMTUyLCJleHAiOjE3NjE2NjQ3NTJ9.YDLCjBM_n_ENUHi-DHQYJFQJepb3MwY9eTke59pRWEY
+
+# --- 1. LOGIN (POST) ---
+# Dê um nome para a requisição de login para referenciar a resposta.
+@name = login
+>>>>>>> 5974d28db4eb4434688c9f11d64dd63b99654077
 POST http://{{hostname}}/api/auth/login
 Content-Type: application/json
 
@@ -24,6 +34,7 @@ Content-Type: application/json
     "password": "admin"
 }
 
+<<<<<<< HEAD
 # --- Script de Captura (CORRIGIDO) ---
 # O script agora está ANTES do '###', como parte da requisição de login.
 > {%
@@ -53,33 +64,73 @@ Content-Type: application/json
 ###
 
 # --- INSERT CLIENTE ---
+=======
+###
+
+# --- 2. GET ALL CLIENTES (PROTEGIDO - COM TOKEN) ---
+# Use o token capturado.
+GET http://{{hostname}}/api/clientes
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+###
+
+# --- 3. GET CLIENTE BY ID (PROTEGIDO - COM TOKEN) ---
+GET http://{{hostname}}/api/clientes/1
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+###
+
+# --- 4. INSERT CLIENTE (PROTEGIDO - COM TOKEN) ---
+>>>>>>> 5974d28db4eb4434688c9f11d64dd63b99654077
 POST http://{{hostname}}/api/clientes
 Content-Type: application/json
 Authorization: Bearer {{jwtToken}}
 
 {
+<<<<<<< HEAD
     "nome": "Cliente Teste Automático",
     "cnpj": "12.345.678/0001-99",
     "datacadastro": "2025-10-31", 
     "limitecredito": 1234.56
+=======
+    "nome": "Novo Cliente Teste",
+    "cnpj": "99.888.777/0001-66",
+    "dataCadastro": "2024-05-20",
+    "limiteCredito": 7500.00
+>>>>>>> 5974d28db4eb4434688c9f11d64dd63b99654077
 }
 
 ###
 
+<<<<<<< HEAD
 # --- UPDATE CLIENTE ---
+=======
+# --- 5. UPDATE CLIENTE (PROTEGIDO - COM TOKEN) ---
+# Substitua {id} pelo ID do cliente a ser atualizado.
+>>>>>>> 5974d28db4eb4434688c9f11d64dd63b99654077
 PUT http://{{hostname}}/api/clientes/1
 Content-Type: application/json
 Authorization: Bearer {{jwtToken}}
 
 {
+<<<<<<< HEAD
     "nome": "Empresa Exemplo (Atualizado Auto)",
     "cnpj": "11.222.333/0001-44",
     "datacadastro": "2023-01-10", 
     "limitecredito": 15000.00
+=======
+    "nome": "Cliente de Exemplo Atualizado",
+    "cnpj": "11.222.333/0001-44",
+    "dataCadastro": "2024-05-20",
+    "limiteCredito": 10000.00
+>>>>>>> 5974d28db4eb4434688c9f11d64dd63b99654077
 }
 
 ###
 
+<<<<<<< HEAD
 # --- DELETE CLIENTE ---
 DELETE http://{{hostname}}/api/clientes/3
 Authorization: Bearer {{jwtToken}}
@@ -138,4 +189,12 @@ DELETE http://{{hostname}}/api/contas-receber/2
 Authorization: Bearer {{jwtToken}}
 Content-Type: application/json
 
+=======
+# --- 6. DELETE CLIENTE (SOFT DELETE - PROTEGIDO - COM TOKEN) ---
+# Substitua {id} pelo ID do cliente a ser marcado como removido.
+DELETE http://{{hostname}}/api/clientes/2
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+>>>>>>> 5974d28db4eb4434688c9f11d64dd63b99654077
 ###

@@ -7,10 +7,17 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 // Importa módulos de rota
+<<<<<<< HEAD
 const indexRouter = require('./routes/index'); // Exemplo de rota padrão
 const authRouter = require('./routes/auth'); // Rotas de autenticação
 const clientesRouter = require('./routes/clientes'); // Rotas para CRUD de clientes
 const contasReceberRouter = require('./routes/contasReceber'); // Rotas para CRUD de contas a receber
+=======
+//const indexRouter = require('./routes/index'); // Exemplo de rota padrão
+const authRouter = require('./routes/auth'); // Rotas de autenticação
+const clientesRouter = require('./routes/clientes'); // Rotas para CRUD de clientes
+//const contasReceberRouter = require('./routes/contasReceber'); // Rotas para CRUD de contas a receber
+>>>>>>> 5974d28db4eb4434688c9f11d64dd63b99654077
 
 const app = express();
 
@@ -20,10 +27,17 @@ app.use(bodyParser.json()); // Parsing de JSON
 app.use(bodyParser.urlencoded({ extended: true })); // Parsing de URL-encoded
 
 // Definição das rotas
+<<<<<<< HEAD
 app.use('/', indexRouter); // Rota raiz
 app.use('/api/auth', authRouter); // Rotas de autenticação (login, registro)
 app.use('/api/clientes', clientesRouter); // Rotas para CRUD de clientes
 app.use('/api/contas-receber', contasReceberRouter); // Rotas para CRUD de contas a receber
+=======
+//app.use('/', indexRouter); // Rota raiz
+app.use('/api/auth', authRouter); // Rotas de autenticação (login, registro)
+app.use('/api/clientes', clientesRouter); // Rotas para CRUD de clientes
+//app.use('/api/contas-receber', contasReceberRouter); // Rotas para CRUD de contas a receber
+>>>>>>> 5974d28db4eb4434688c9f11d64dd63b99654077
 
 // Tratamento de erros 404
 app.use((req, res, next) => {
